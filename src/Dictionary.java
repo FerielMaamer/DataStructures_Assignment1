@@ -38,9 +38,9 @@ public class Dictionary {
     public boolean exists(String word){
         int low=0;
         int high=numWords;
-        while(low<high){
+        while(low<=high){
             int mid = (low+high)/2;
-            if (dictionary[mid].word.equals(word)){
+            if (dictionary[mid].word.compareTo(word) == 0){
                 return true;
             }else if (dictionary[mid].word.compareTo(word)>0){
                 high=mid-1;
@@ -54,9 +54,9 @@ public class Dictionary {
     public int getIndex(String word){
         int low=0;
         int high=numWords;
-        while(low<high){
+        while(low<=high){
             int mid = (low+high)/2;
-            if (dictionary[mid].word.equals(word)){
+            if (dictionary[mid].word.compareTo(word) == 0){
                 return mid;
             }else if (dictionary[mid].word.compareTo(word)>0){
                 high=mid-1;
@@ -69,13 +69,23 @@ public class Dictionary {
     }
 
     public boolean add (String word, String meaning){
+        //int index= getIndex(word);
         if (!exists(word) && numWords<=maxNumWords){
+            //creating the new object
             WordInfo newWord = new WordInfo(word.toLowerCase(), meaning);
-            dictionary[numWords]=newWord;
+            //using insertion sort to order the list before adding the object
+            int prepos = numWords-1;
+            while(prepos>=0 && dictionary[prepos].word.toLowerCase().compareTo(word)>0){
+                dictionary[prepos+1]=dictionary[prepos];
+                prepos--;
+            }
+            //adding the object at the right spot
+            dictionary[prepos+1]=newWord;
             numWords++;
             return true;
+        }else{
+            return false;
         }
-        return false;
     }
 
     public boolean delete (String word){
@@ -92,10 +102,8 @@ public class Dictionary {
 
     public String getMeaning(String word){
         int index=getIndex(word);
-        String meaning;
         if(index!=-1){
-            meaning = dictionary[index].meaning;
-            return meaning;
+            return dictionary[index].meaning;
         }
         return "Word not Found";
     }
@@ -133,7 +141,7 @@ public class Dictionary {
     public String printWordList(){
         String wordList = "";
         for (int i=0; i<numWords; i++){
-            wordList+= dictionary[i].word + ", ";
+            wordList+= dictionary[i].word + ",\n";
         }
         return wordList;
     }

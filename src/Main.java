@@ -7,61 +7,68 @@ public class Main {
         //first load all known words from the text file “wordlist.txt” into the dictionary class
         Dictionary dc = new Dictionary();
         dc.loadFromFile("src/wordList.txt");
-        //System.out.println(dc.printWordList());
-        //dc.printDictionary();
-        //dc.textFileSpellCheck("src/test.txt");
-        System.out.println(dc.add("monster", "a big creature"));
-        dc.printDictionary();
-        System.out.println(dc.delete("monster"));
-        System.out.println(dc.getMeaning("monster"));
-        System.out.println(dc.getIndex("your"));
-//        Create a main program with the following menu options:
-//        1: Add new word
-//        2: Delete word
-//        3: Get meaning
-//        4: Dictionary list
-//        5: Spell check a text file.
-//        6: Exit
-//        System.out.println(
-//                "1:Add new word \n" +
-//                "2:Delete word \n"+
-//                "3:Get meaning \n"+
-//                "4:Dictionary list \n"+
-//                "5:Spell check a text file \n"+
-//                "6:Exit \n"
-//        );
-//        int menuIndex = Integer.parseInt(input.nextLine());
-//        switch(menuIndex) {
-//            case 1:
-//                System.out.println("What is the word?\n");
-//                String word = input.nextLine();
-//                System.out.println("What is the meaning of the word?\n");
-//                String meaning = input.nextLine();
-//                dc.add(word,meaning);
-//                break;
-//            case 2:
-//                System.out.println("What is the word to delete?\n");
-//                String wordDelete = input.nextLine();
-//                dc.delete(wordDelete);
-//                break;
-//            case 3:
-//                System.out.println("Which word would you like to get the meaning of?\n");
-//                String wordMeaning = input.nextLine();
-//                dc.getMeaning(wordMeaning);
-//                break;
-//            case 4:
-//                dc.printWordList();
-//                break;
-//            case 5:
-//                // code block
-//                break;
-//            case 6:
-//                break;
-//            default:
-//                System.out.println("You did not enter a correct value");
-//                break;
-//        }
 
+        displayMenu();
+        int menuIndex = Integer.parseInt(input.nextLine());
+        while (menuIndex != 6) {
+            if(menuIndex==1) {
+                System.out.println("What is the word?\n");
+                String word = input.nextLine();
+                System.out.println("What is the meaning of the word?\n");
+                String meaning = input.nextLine();
+                boolean wasAdded = dc.add(word, meaning);
+                if (wasAdded){System.out.println("The word was successfully added");}
+                else{System.out.println("The word could not be added");}
+                displayMenu();
+                menuIndex = Integer.parseInt(input.nextLine());
+            }
+            if(menuIndex==2) {
+                System.out.println("What is the word to delete?\n");
+                String wordDelete = input.nextLine();
+                boolean wasDeleted = dc.delete(wordDelete);
+                if (wasDeleted){System.out.println("The word was successfully deleted");}
+                else{System.out.println("The word could not be deleted");}
+                displayMenu();
+                menuIndex = Integer.parseInt(input.nextLine());
+            }
+            if (menuIndex==3) {
+                System.out.println("Which word would you like to get the meaning of?\n");
+                String wordMeaning = input.nextLine();
+                System.out.println(dc.getMeaning(wordMeaning));
+                displayMenu();
+                menuIndex = Integer.parseInt(input.nextLine());
+            }
+            if (menuIndex==4) {
+                System.out.println(dc.printWordList());
+                displayMenu();
+                menuIndex = Integer.parseInt(input.nextLine());
+            }
+            if (menuIndex==5) {
+                System.out.println("Enter the file path");
+                String filePath = input.nextLine();
+                dc.textFileSpellCheck(filePath);
+                displayMenu();
+                menuIndex = Integer.parseInt(input.nextLine());
+            }
+            if (menuIndex==6)
+                    break;
+            else{
+                System.out.println("You did not enter a correct value, please choose the right number or exit with 6");
+                displayMenu();
+                menuIndex = Integer.parseInt(input.nextLine());
+            }
+        }
+    }
+    public static void displayMenu(){
+        System.out.println("\nPlease choose and option from the menu below");
+        System.out.println(
+                "1:Add new word \n" +
+                        "2:Delete word \n"+
+                        "3:Get meaning \n"+
+                        "4:Dictionary list \n"+
+                        "5:Spell check a text file \n"+
+                        "6:Exit \n"
+        );
     }
 
 }
